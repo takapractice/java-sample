@@ -48,8 +48,16 @@ jobs:
             if [ "$CIRCLE_NODE_INDEX" == 0 ]; then
               ./gradlew assemble
             fi
-      - store_artifacts:
-          path: build/libs
+      - run:
+          name: jFrog CLI のインストール
+          command: curl -fL https://getcli.jfrog.io | sh
+      - run:
+          name: Artifactory へのプッシュ
+          command: |
+            ./jfrog rt config --url https://taca17.jfrog.io/artifactory/ --user rockhop17g@gmail.com --apikey AKCp8ihLMCzJ3XhHSdPeFR7bRVA7YxKG6aQHCAp8bCJ4RP6HcPifzd7ro5CfUSnrV6KpJS2xR --interactive=false
+            ./jfrog rt u "multi*/*.jar" libs-release-local
+      #- store_artifacts:
+      #    path: build/libs
 workflows:
   version: 2
   workflow:
