@@ -53,9 +53,18 @@ jobs:
           command: |
             pwd;
             ls -ltr;
+            cd build/libs;
+            ls -ltr;
       - run:
           name: jFrog CLI のインストール
           command: curl -fL https://getcli.jfrog.io | sh
+      - run:
+          name: フォルダ確認
+          command: |
+            pwd;
+            ls -ltr;
+            cd build/libs;
+            ls -ltr;
       - run:
           name: Artifactory へのプッシュ
           command: |
