@@ -53,7 +53,7 @@ jobs:
           command: |
             pwd;
             ls -ltr;
-            cd build/libs;
+            cd build;
             ls -ltr;
       - run:
           name: jFrog CLI のインストール
