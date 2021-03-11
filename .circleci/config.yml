@@ -55,7 +55,7 @@ jobs:
           name: Artifactory へのプッシュ
           command: |
             ./jfrog config add --artifactory-url https://taca17.jfrog.io/artifactory/ --user rockhop17g@gmail.com --apikey AKCp8ihLMCzJ3XhHSdPeFR7bRVA7YxKG6aQHCAp8bCJ4RP6HcPifzd7ro5CfUSnrV6KpJS2xR --interactive=false
-            ./jfrog rt u "build/libs/demo-0.0.1-SNAPSHOT.jar" libs-release-local
+            ./jfrog rt u "build/libs/demo-0.0.1-SNAPSHOT.jar" libs-released-local
       #- store_artifacts:
       #    path: build/libs
 workflows:
