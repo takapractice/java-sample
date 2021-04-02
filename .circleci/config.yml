@@ -53,26 +53,50 @@ jobs:
           name: jFrog CLI のインストール
           command: curl -fL https://getcli.jfrog.io | sh
       - run:
-          name: Push Artifactory1
+          name: Artifactory への接続
           command: |
             pwd
             ls -ltr ./build
             ls -ltr ./build/libs
             ./jfrog config add --artifactory-url https://taca17.jfrog.io/artifactory/ --user rockhop17g@gmail.com --apikey AKCp8ihLMCzJ3XhHSdPeFR7bRVA7YxKG6aQHCAp8bCJ4RP6HcPifzd7ro5CfUSnrV6KpJS2xR --interactive=false
       - run:
-          name: Push Artifactory2
+          name: Artifactory へのプッシュ
           command: |
             ./jfrog rt u "build/libs/*.jar" libs-released-local/
-      #- run:
-      #    name: Artifactory へのプッシュ
-      #    command: |
-      #      ./jfrog config add --artifactory-url https://taca17.jfrog.io/artifactory/ --user rockhop17g@gmail.com --apikey AKCp8ihLMCzJ3XhHSdPeFR7bRVA7YxKG6aQHCAp8bCJ4RP6HcPifzd7ro5CfUSnrV6KpJS2xR --interactive=false
-      #      ./jfrog rt u "build/libs/*.jar" libs-released-local/
             
       #- store_artifacts:
       #    path: build/libs
+
+  deploy:
+    working_directory: ~/repo
+    docker:
+      - image: circleci/python:3.6.1
+    steps:
+      - checkout
+      - run:
+          name: Install ansible
+          command: |
+            sudo pip install --upgrade pip
+            sudo pip install ansible
+      - run:
+          name: Install jFrog CLI
+          command: curl -fL https://getcli.jfrog.io | sh
+      - run:
+          name: Artifactory への接続
+          command: |
+            ./jfrog config add --artifactory-url https://taca17.jfrog.io/artifactory/ --user rockhop17g@gmail.com --apikey AKCp8ihLMCzJ3XhHSdPeFR7bRVA7YxKG6aQHCAp8bCJ4RP6HcPifzd7ro5CfUSnrV6KpJS2xR --interactive=false
+      - run:
+          name: Artifactory からダウンロード
+          command: |
+            ./jfrog rt dl libs-released-local/backbeard.tar.gz
+            ./jfrog rt dl libs-released-local/backbeard-staging.zip
+      #- run:
+      #    name: deploy master
+      #    command: cd ansible/ && ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i hosts deploy.yml --extra-vars "aws_access_key=${AWS_ACCESS_KEY_ID} aws_secret_key=${AWS_SECRET_ACCESS_KEY}"
+
 workflows:
   version: 2
   workflow:
     jobs:
     - build_and_test
+    - deploy
