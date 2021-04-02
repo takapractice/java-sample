@@ -46,7 +46,7 @@ jobs:
           name: JARの作成
           command: |
        #     if [ "$CIRCLE_NODE_INDEX" == 0 ]; then
-              ./gradlew assemble
+            ./gradlew assemble
        #     fi
 
       - run:
