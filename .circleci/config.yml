@@ -53,18 +53,24 @@ jobs:
           command: |
             pwd;
             ls -ltr;
-            cd build/classes;
-            ls -ltr;
-            cd ../resources;
-            ls -ltr;
       - run:
           name: jFrog CLI のインストール
           command: curl -fL https://getcli.jfrog.io | sh
       - run:
-          name: Artifactory へのプッシュ
+          name: Push Artifactory1
           command: |
+            pwd
+            ls -ltr ./
             ./jfrog config add --artifactory-url https://taca17.jfrog.io/artifactory/ --user rockhop17g@gmail.com --apikey AKCp8ihLMCzJ3XhHSdPeFR7bRVA7YxKG6aQHCAp8bCJ4RP6HcPifzd7ro5CfUSnrV6KpJS2xR --interactive=false
+      - run:
+          name: Push Artifactory2
+          command: |
             ./jfrog rt u "build/libs/*.jar" libs-released-local/
+      #- run:
+      #    name: Artifactory へのプッシュ
+      #    command: |
+      #      ./jfrog config add --artifactory-url https://taca17.jfrog.io/artifactory/ --user rockhop17g@gmail.com --apikey AKCp8ihLMCzJ3XhHSdPeFR7bRVA7YxKG6aQHCAp8bCJ4RP6HcPifzd7ro5CfUSnrV6KpJS2xR --interactive=false
+      #      ./jfrog rt u "build/libs/*.jar" libs-released-local/
             
       #- store_artifacts:
       #    path: build/libs
