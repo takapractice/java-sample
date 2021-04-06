@@ -55,6 +55,7 @@ jobs:
       - run:
           name: Artifactory への接続
           command: |
+            ipconfig
             pwd
             ls -ltr ./build
             ls -ltr ./build/libs
