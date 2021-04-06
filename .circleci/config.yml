@@ -91,9 +91,9 @@ jobs:
           command: |
             ./jfrog rt dl libs-released-local/*.jar
       #- run:
-      #    name: deploy master
-      #    command: cd ansible/ && ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i hosts deploy.yml --extra-vars "aws_access_key=${AWS_ACCESS_KEY_ID} aws_secret_key=${AWS_SECRET_ACCESS_KEY}"
-
+      #    name: ansible deploy の実行
+      #    command: 
+      
 workflows:
   version: 2
   workflow:
